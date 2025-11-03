@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 //import reactLogo from './assets/react.svg'
 //import viteLogo from '/vite.svg'
+import ChartView from "./ChartView.jsx";
 
 const STORAGE_KEY = "budget-tracker-data-v1";
 
@@ -265,6 +266,7 @@ function App() {
           <p style={{ color: "#94a3b8", fontSize: "0.8rem" }}>
             Stored locally in your browser — your bad spending habits are safe from prying eyes.
           </p>
+          <ChartView expenses={expenses} />
         </div>
       </aside>
     </div>
