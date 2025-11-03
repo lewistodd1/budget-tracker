@@ -8,6 +8,8 @@ const DEFAULT_CATEGORIES = [
   "General",
   "Food & Drink",
   "Rent / Housing",
+  "Utilities",
+  "Savings",
   "Transport",
   "Shopping",
   "Subscriptions",
@@ -110,7 +112,7 @@ function App() {
             <input
               type="number"
               name="amount"
-              placeholder="£"
+              placeholder="£..."
               value={form.amount}
               onChange={handleFormChange}
               style={{ flex: "1" }}
