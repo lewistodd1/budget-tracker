@@ -6,6 +6,58 @@ import {
 
 const COLORS = ["#818CF8", "#F87171", "#34D399", "#FBBF24", "#A78BFA", "#60A5FA", "#F472B6"];
 
+// --- Custom tooltip for the line chart ---
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const date = label;
+    const amount = payload[0].value;
+
+    return (
+      <div
+        style={{
+          background: "#1e293b",
+          border: "1px solid #334155",
+          borderRadius: "6px",
+          padding: "6px 10px",
+          color: "#f1f5f9",
+          fontSize: "0.85rem",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.5)"
+        }}
+      >
+        <p style={{ margin: 0, color: "#cbd5e1", fontWeight: 600 }}>{date}</p>
+        <p style={{ margin: 0, color: "#818CF8" }}>£{amount.toFixed(2)}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+// --- Custom tooltip for the pie chart ---
+const CustomPieTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    const { name, value, payload:slice } = payload[0];
+    const sliceColor = slice.fill || "#818CF8"; // fallback if Recharts forgets
+    return (
+      <div
+        style={{
+          background: "#1e293b",
+          border: "1px solid #334155",
+          borderRadius: "6px",
+          padding: "6px 10px",
+          color: payload[0].fill,
+          fontSize: "0.85rem",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.5)"
+        }}
+      >
+        <p style={{ margin: 0, color: "#cbd5e1", fontWeight: 600 }}>{name}</p>
+        <p style={{ margin: 0, color: sliceColor }}>£{value.toFixed(2)}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+
 export default function ChartView({ expenses }) {
   if (!expenses.length) {
     return (
@@ -47,7 +99,7 @@ export default function ChartView({ expenses }) {
         background: "#0f172a",
         border: "1px solid #1e293b",
         borderRadius: "8px",
-        padding: "1rem"
+        padding: "0.8rem"
       }}>
         <h3 style={{ color: "#e2e8f0", fontSize: "0.9rem", marginBottom: "1rem" }}>
           Spending by Category
@@ -65,7 +117,7 @@ export default function ChartView({ expenses }) {
                 <Cell key={i} fill={COLORS[i % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip />
+            <Tooltip content = {<CustomPieTooltip/>} />
           </PieChart>
         </ResponsiveContainer>
       </div>
@@ -84,7 +136,7 @@ export default function ChartView({ expenses }) {
           <LineChart data={lineData}>
             <XAxis dataKey="date" tick={{ fill: "#94a3b8", fontSize: 12 }} />
             <YAxis tick={{ fill: "#94a3b8", fontSize: 12 }} />
-            <Tooltip />
+            <Tooltip content = {<CustomTooltip />} />
             <Line type="monotone" dataKey="total" stroke="#818CF8" strokeWidth={2} />
           </LineChart>
         </ResponsiveContainer>
